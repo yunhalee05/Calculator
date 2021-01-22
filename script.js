@@ -5,22 +5,22 @@ class Calculator{
         this.clear()
     }
 
-    clear(){
+    clear(){ /*AC 버튼 눌렀을 때*/
         this.currentOperand = ''
         this.previousOperand = ''
         this.poreation = undefined
     }
 
-    delete(){
+    delete(){/*del 버튼 눌렀을 때*/
         this.currentOperand = this.currentOperand.toString().slice(0, -1) /*한자리 삭제(가장 최근것을 삭제) */
     }
 
-    appendNumber(number){
+    appendNumber(number){/* 숫자버튼 눌렀을 때*/
         if(number === '.' && this.currentOperand.includes('.')) return
         this.currentOperand = this.currentOperand.toString() + number.toString()
     }
 
-    chooseOperation(operation){
+    chooseOperation(operation){ /* 수식기호 버튼 눌렀을 때*/
         if(this.currentOperand ==='') return
         if(this.previousOperand !== ''){
             this.compute()
@@ -31,7 +31,7 @@ class Calculator{
 
     }
 
-    compute(){
+    compute(){/* = 버튼 눌렀을 때*/
         let computation
         const prev = parseFloat(this.previousOperand)
         const current = parseFloat(this.currentOperand)
@@ -57,10 +57,10 @@ class Calculator{
         this.operation = undefined
         this.previousOperand = ''
     }
-    getDisplayNumber(number){
+    getDisplayNumber(number){ /*숫자가 여러개 눌릴때 숫자를 어떻게 보일지 설정*/
         const stringNumber = number.toString()
-        const integerDigits = parseFloat(stringNumber.split('.')[0])
-        const decimalDigits = stringNumber.split('.')[1]
+        const integerDigits = parseFloat(stringNumber.split('.')[0]) /* . 기준으로 앞에거 저장*/
+        const decimalDigits = stringNumber.split('.')[1] /* .기준으로 뒤의 것 저장 */
         let integerDisplay
         if(isNaN(integerDigits)) {/*인티저자리는 en을 통해서 3자리마다 , 뜨도록 설정*/
             integerDisplay = ''
@@ -76,13 +76,13 @@ class Calculator{
 
     }
 
-    updateDisplay(){
+    updateDisplay(){/* 화면에 어떻게 보일 지 설정한다.*/
         this.currentOperandTextElement.innerText = 
         this.getDisplayNumber(this.currentOperand)
-        if(this.operation != null) {
+        if(this.operation != null) { /*수식기호가 있다면 계산한 값을 previousOperand에 보이도록 한다.*/
             this.previousOperandTextElement.innerText = 
             `${this.getDisplayNumber(previousOperand)} ${this.operation}`
-        } else{
+        } else{/*없으면 current창만 뜨도록 설정  */
             this.previousOperandTextElement.innerText = ''
 
         }
@@ -103,6 +103,8 @@ const currentOperandTextElement=document.querySelector('[data-current-operand]')
 
 const calculator = new Calculator(previousOperandTextElement,currentOperandTextElement)
 
+
+/*각 버튼을 클릭했을때 어떻게 작동할 것인지 설정 */
 numberButtons.forEach(button => {
     button.addEventListener('click', ()=>{
         calculator.appendNumber(button.innerText)
